@@ -1,4 +1,10 @@
+# pdf-parser
+- [x] PDF에서 텍스트, 테이블 이미지 분류해서 데이터 저장
+- [x] 텍스트 데이터에 대한 청킹, 임베딩 수행 (*현재 UpstageAPI를 사용, 추후 openAI로 변경 예정)
+- [x] DB구조에 맞게 반환값 설정
+- [ ] 임베딩 벡터 DB에 저장 (pgvector, sqlalchemy)
 
+------
 ## 실행 전 주의사항
 - .env파일 개별 설정 수행
 - 가상환경 구성 후 requirements.txt 로 필요한 패키지 설치
