@@ -1,0 +1,112 @@
+# =============================
+# 환경 관련
+# =============================
+.env
+*.env
+.env.*
+*.secret
+*.local
+
+# =============================
+# 파이썬 캐시 및 빌드 파일
+# =============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# =============================
+# 가상환경 폴더
+# =============================
+.mmauto2/
+venv/
+.venv/
+env/
+env.bak/
+ENV/
+envs/
+
+# =============================
+# 테스트 및 로그 파일
+# =============================
+.pytest_cache/
+coverage/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.out
+*.err
+*.dat
+.cache/
+htmlcov/
+logs/
+tmp/
+work_dir/
+
+# =============================
+# Docker 관련
+# =============================
+# Docker compose override files
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# PID / lock / seed files
+*.pid
+*.seed
+*.pid.lock
+
+# Docker build or runtime temp data
+__docker_temp__/
+*.db
+*.sqlite3
+
+# =============================
+# FastAPI / Uvicorn / Gunicorn
+# =============================
+.reloader-cache/
+gunicorn.log
+uvicorn.log
+
+# =============================
+# 타입체커 / 정적분석
+# =============================
+.mypy_cache/
+.pyre/
+.pytype/
+.dmypy.json
+
+# =============================
+# IDE / OS 관련
+# =============================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VSCode / JetBrains IDEs
+.vscode/
+.idea/
+*.iml
+
+# =============================
+# 기타
+# =============================
+.ipynb_checkpoints/
+*.sqlite
+*.db-journal
+*.bak
+*.tmp
+*.swp
+*.swo
