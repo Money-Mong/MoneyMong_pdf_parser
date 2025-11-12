@@ -1,6 +1,11 @@
+# TODO: S3 경로로 변경
+
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 BASE_DIR = os.getcwd()
-PDF_FOLDER = os.path.join(BASE_DIR, "input_pdfs")
+PDF_FOLDER = os.path.join(BASE_DIR, "test_pdf") #input_pdfs 
 WORK_DIR = os.path.join(BASE_DIR, "work_dir")
 JSON_DIR = os.path.join(WORK_DIR, "json")
 CROP_DIR = os.path.join(WORK_DIR, "crops")

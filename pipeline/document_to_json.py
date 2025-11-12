@@ -1,3 +1,8 @@
+'''
+로컬 테스트를 위한 doc_to_json
+문서 parsing 결과를 json으로 잘 받아오는지 확인
+'''
+
 def build_document_json(result):
     report_id = result["document_id"]
     

@@ -2,7 +2,7 @@
 
 import os
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from pipeline.run_pipeline import run_pipeline_single
+from pipeline.pipeline_parser import run_pipeline_single
 from config.paths import PDF_FOLDER
 
 def run_parallel(max_workers=4):

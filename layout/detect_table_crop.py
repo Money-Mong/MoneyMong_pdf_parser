@@ -58,14 +58,5 @@ def detect_table_crop(page_img_path, report_id, page_number=1, threshold=0.4):
             "metadata": {"bbox_pdf": pdf_bbox, "bbox_image": [x0, y0, x1, y1]},
             "created_at": datetime.utcnow().isoformat()
         })
-        # table_layout_boxes.append(
-        #     {
-        #         "content_type": "table",
-        #         "bbox_pdf": pdf_bbox,              # pdf좌표 
-        #         "bbox_image": [x0, y0, x1, y1],    # px좌표
-        #         "image_path": crop_path,
-        #         "page": 1,
-        #     }
-        # )
-
+   
     return table_layout_boxes

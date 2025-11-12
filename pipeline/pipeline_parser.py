@@ -9,7 +9,7 @@ from text.text_cleaner import clean_text
 from text.embedding import chunk_and_embed
 from utils.file_io import save_json
 
-def run_pipeline():
+def run_pdf_pipeline():
     pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.endswith('.pdf')]
     processed = []
     all_results = []
@@ -44,27 +44,7 @@ def run_pipeline():
             }
         all_results.append(result)
         
-        # print(result) # test용
-        # json_path = os.path.join(JSON_DIR, f"{report_id}.json")
-        # save_json(result, json_path)
         processed.append(report_id)
     return processed, all_results
 
 
-# def run_pipeline():
-#     pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.endswith('.pdf')]
-#     processed = []
-#     for f in pdf_files:
-#         report_id = os.path.splitext(f)[0]
-#         pdf_path = os.path.join(PDF_FOLDER, f)
-#         page_img = save_first_page(pdf_path, report_id)
-#         table_layout_boxes = detect_table_crop(page_img, report_id)
-#         text = extract_text(pdf_path, table_layout_boxes)
-#         if len(text) < 50 : continue
-#         clean = clean_text(text)
-#         chunks = chunk_and_embed(clean)
-#         result = {"report_id":report_id,"chunks":chunks,"non_text_blocks":table_layout_boxes}
-#         json_path = os.path.join(JSON_DIR, f"{report_id}.json")
-#         save_json(result, json_path)
-#         processed.append(report_id)
-#     return processed

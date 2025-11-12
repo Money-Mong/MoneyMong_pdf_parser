@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from pipeline.run_pipeline import run_pipeline
+from pipeline.store_to_db import store_pipeline_result_to_db
 from pipeline.document_to_json import build_document_json
 from utils.file_io import save_json
 from dotenv import load_dotenv
@@ -17,15 +18,17 @@ def root():
 
 @app.post("/pdf-parser")
 def run_task():
-    processed, results = run_pipeline()
+    store_pipeline_result_to_db()
+    # processed, results = run_pipeline()
 
-    # json으로 저장해서 test
-    for result in results:
-        doc_to_json = build_document_json(result)
-        json_path = os.path.join(JSON_DIR, f"{doc_to_json['report_id']}.json")
-        save_json(doc_to_json, json_path)
-
-    return {"status": "completed", "processed_count": len(processed), "processed": processed}
+    # # json으로 저장해서 test
+    # for result in results:
+    #     doc_to_json = build_document_json(result)
+    #     json_path = os.path.join(JSON_DIR, f"{doc_to_json['document_id']}.json")
+    #     save_json(doc_to_json, json_path)
+    #     store_pipeline_result_to_db(result)
+    # return {"status": "completed", "processed_count": len(processed), "processed": processed, "message": "All PDF files processed and stored successfully."}
+    return {"status": "completed", "message": "All PDF files processed and stored successfully."}
 
 
 
