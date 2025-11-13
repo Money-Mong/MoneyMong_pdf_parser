@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
-from pipeline.run_pipeline import run_pipeline
-from pipeline.store_to_db import store_pipeline_result_to_db
+from pipeline.pipeline_parser import run_pdf_pipeline
+from pipeline.pipeline_db_store import run_db_store_pipeline
 from pipeline.document_to_json import build_document_json
 from utils.file_io import save_json
 from dotenv import load_dotenv
@@ -18,7 +18,7 @@ def root():
 
 @app.post("/pdf-parser")
 def run_task():
-    store_pipeline_result_to_db()
+    run_db_store_pipeline()
     # processed, results = run_pipeline()
 
     # # json으로 저장해서 test
