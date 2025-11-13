@@ -23,6 +23,11 @@ moneymong_pdf_parser/
 ├── main.py                          # FastAPI 엔트리 포인트 (원격 실행)
 ├── run_pipeline_parallel.py         # 병렬 처리 기반 전체 파이프라인 실행
 │
+├── app/
+│   ├── routes/						# FastAPI 라우터
+│   │   └── pdf_parser.py
+│   └── services/					# FastAPI 서비스
+│       └── pdf_pipeline.py
 ├── config/
 │   ├── __init__.py
 │   ├── env_loader.py                # 환경 변수 관리 (.env)
