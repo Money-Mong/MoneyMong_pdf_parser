@@ -3,11 +3,11 @@ import os, sys
 from contextlib import contextmanager
 from dotenv import dotenv_values
 
-# PDF Parser, BE 각각의 .env 경로
+# (로컬)PDF Parser, BE 각각의 .env 경로 명시
 PARSER_ENV = "/Users/jenzennii/Development/moneymong/MoneyMong_pdf_parser/.env"
 BE_ENV     = "/Users/jenzennii/Development/moneymong/MoneyMong_BE/.env"
 
-# oneyMong_BE 모듈 패키지 경로 명시
+# (로컬)oneyMong_BE 모듈 패키지 경로 명시
 EXPLICIT_PATH = "/Users/jenzennii/Development/moneymong/MoneyMong_BE" 
 
 # parser 환경 우선 로드

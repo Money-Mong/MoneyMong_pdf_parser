@@ -8,9 +8,9 @@ from db.db_connector import SessionLocal
 from db.insert_pipeline import insert_pipeline_result
 from pipeline.pipeline_parser import run_pdf_pipeline
 
+""" PDF → 분석 → DB 저장 전체 프로세스"""
 
 def run_db_store_pipeline():
-    """ PDF → 분석 → DB 저장 전체 프로세스"""
     processed, all_results = run_pdf_pipeline()
     db = SessionLocal()
 
