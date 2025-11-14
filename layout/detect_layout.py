@@ -5,12 +5,10 @@ from datetime import datetime
 from PIL import Image
 from utils.detr_loader import processor, model, device
 
-def detect_layout(page_img_path, report_id, page_number=1, threshold=0.4):
-    """
-    페이지 이미지에서 레이아웃(텍스트, 표, 이미지 등)을 감지
-    각 요소의 라벨, 박스 좌표 반환
-    """
-    image = Image.open(page_img_path).convert("RGB")
+"""페이지 이미지에서 레이아웃(텍스트, 표, 이미지 등)을 감지 각 요소의 라벨, 박스 좌표 반환"""
+
+def detect_layout(image: Image.Image, report_id, page_number=1, threshold=0.4):
+
     W, H = image.size
 
     inputs = processor(images=image, return_tensors="pt").to(device)

@@ -1,14 +1,20 @@
-# TODO: S3 경로로 변경
-
 import os
 from dotenv import load_dotenv
+import boto3
+
 load_dotenv()
 
-BASE_DIR = os.getcwd()
-PDF_FOLDER = os.path.join(BASE_DIR, "test_pdf") #input_pdfs 
-WORK_DIR = os.path.join(BASE_DIR, "work_dir")
-JSON_DIR = os.path.join(WORK_DIR, "json")
-CROP_DIR = os.path.join(WORK_DIR, "crops")
-IMG_DIR = os.path.join(WORK_DIR, "pages")
-for path in [PDF_FOLDER, WORK_DIR, JSON_DIR, CROP_DIR, IMG_DIR]:
-    os.makedirs(path, exist_ok=True)
+# 환경 변수
+S3_BUCKET = os.getenv("S3_BUCKET")
+S3_RAW_PREFIX = os.getenv("S3_RAW_PREFIX", "raw-documents/")
+S3_CROP_PREFIX = os.getenv("S3_CROP_PREFIX", "processed-documents/crops/")
+S3_PAGE_IMG_PREFIX = os.getenv("S3_PAGE_IMG_PREFIX", "processed-documents/page-img/")
+S3_JSON_PREFIX = os.getenv("S3_JSON_PREFIX", "processed-documents/json/")
+
+# S3 전용 경로 설정
+PDF_FOLDER = f"s3://{S3_BUCKET}/{S3_RAW_PREFIX}"
+CROP_DIR = f"s3://{S3_BUCKET}/{S3_CROP_PREFIX}"
+IMG_DIR = f"s3://{S3_BUCKET}/{S3_PAGE_IMG_PREFIX}"
+JSON_DIR = f"s3://{S3_BUCKET}/{S3_JSON_PREFIX}"
+
+s3 = boto3.client("s3")

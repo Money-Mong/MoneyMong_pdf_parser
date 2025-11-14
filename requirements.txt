@@ -24,12 +24,13 @@ pdfminer.six>=20221105
 pdf2image>=1.17.0
 pillow>=10.0.0
 
-# ============ Server & Utils ============
+# ============ Server & Utils ========
 fastapi>=0.115.0
 uvicorn>=0.30.0
 python-dotenv>=1.0.0
 pydantic-settings>=2.0.0
 
-
+# ============ BOTO3 ========
+boto3
 
 
