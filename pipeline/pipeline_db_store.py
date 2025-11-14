@@ -2,7 +2,6 @@
 # run_pipeline의 반환값 → DB에 자동 삽입
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from config.env_loader import be_context
 from db.db_connector import SessionLocal
 from db.insert_pipeline import insert_pipeline_result
@@ -20,10 +19,14 @@ def run_db_store_pipeline():
         from app.models.document import DocumentLayout
         from app.models.document import DocumentAsset
         from app.models.document import DocumentChunk
-        
+        from config.paths import S3_BUCKET, S3_RAW_PREFIX
+
         for result in all_results:
             report_id = result["document_id"]
-            pdf_path = f"/data/pdfs/{report_id}.pdf"  # or S3 경로
+
+            # ✅ S3 경로로만 처리
+            pdf_path = f"s3://{S3_BUCKET}/{S3_RAW_PREFIX}{report_id}.pdf"
+
             print(f"🚀 Processing document: {report_id}")
             
             try:
@@ -33,12 +36,10 @@ def run_db_store_pipeline():
                     Document, DocumentLayout, DocumentAsset, DocumentChunk,
                     pdf_path=pdf_path
                 )
-            
             except Exception as e:
                 db.rollback()
-                print(f"Failed to insert {report_id}: {e}")
+                print(f"❌ Failed to insert {report_id}: {e}")
                 continue
     
     db.close()
-    
     print("🎉 All PDF documents processed and updated successfully.")

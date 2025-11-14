@@ -1,4 +1,5 @@
 import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from fastapi import FastAPI
 from pipeline.pipeline_parser import run_pdf_pipeline
 from pipeline.pipeline_db_store import run_db_store_pipeline
@@ -19,16 +20,6 @@ def root():
 @app.post("/pdf-parser")
 def run_task():
     run_db_store_pipeline()
-    # processed, results = run_pipeline()
 
-    # # json으로 저장해서 test
-    # for result in results:
-    #     doc_to_json = build_document_json(result)
-    #     json_path = os.path.join(JSON_DIR, f"{doc_to_json['document_id']}.json")
-    #     save_json(doc_to_json, json_path)
-    #     store_pipeline_result_to_db(result)
-    # return {"status": "completed", "processed_count": len(processed), "processed": processed, "message": "All PDF files processed and stored successfully."}
     return {"status": "completed", "message": "All PDF files processed and stored successfully."}
-
-
 

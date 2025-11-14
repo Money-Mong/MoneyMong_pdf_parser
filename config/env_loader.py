@@ -40,3 +40,4 @@ def be_context():
         os.chdir(prev)
 
 print("✅ Loaded parser + BE DB environment successfully")
+
