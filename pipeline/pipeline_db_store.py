@@ -1,4 +1,4 @@
-# MoneMong_pdf_parser/pipeline/store_to_db.py
+# MoneMong_pdf_parser/pipeline/pipeline_db_store.py
 # run_pipeline의 반환값 → DB에 자동 삽입
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -22,9 +22,9 @@ def run_db_store_pipeline():
         from config.paths import S3_BUCKET, S3_RAW_PREFIX
 
         for result in all_results:
-            report_id = result["document_id"]
+            report_id = result["report_id"]
 
-            # ✅ S3 경로로만 처리
+            # S3 경로
             pdf_path = f"s3://{S3_BUCKET}/{S3_RAW_PREFIX}{report_id}.pdf"
 
             print(f"🚀 Processing document: {report_id}")

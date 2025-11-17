@@ -21,5 +21,5 @@ def insert_pipeline_result(result, db, Document, DocumentLayout, DocumentAsset, 
     insert_chunks(db, DocumentChunk, document.id, result["chunk_records"])
 
     db.commit()
-    print(f"✅ Pipeline DB update completed for {result['document_id']} (uuid={document.id})")
+    print(f"✅ Pipeline DB update completed for {result['report_id']} (uuid={document.id})")
     return document.id

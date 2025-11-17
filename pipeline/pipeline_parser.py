@@ -16,7 +16,8 @@ def run_pdf_pipeline():
     
     pdf_files = get_local_pdf_files()                                                                   # s3 > 로컬 > 로컬와 s3key 반환                                                           
     for original_name, local_pdf_path in pdf_files:
-        report_id = os.path.splitext(os.path.basename(original_name))[0]
+    
+        report_id = os.path.splitext(os.path.basename(original_name))[0].split("_", 1)[1]               # report_id = source_nid 이용
 
         print(f"📄 Processing {report_id}...")
 
@@ -41,7 +42,7 @@ def run_pdf_pipeline():
 
             # 전체 모듈에 대한 반환 확인
             result = {
-                "document_id":report_id,
+                "report_id": report_id,
                 "layout_records":layout_elements,
                 "asset_records":table_layout_boxes,
                 "chunk_records":chunk_records,

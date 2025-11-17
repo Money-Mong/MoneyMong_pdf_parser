@@ -25,9 +25,8 @@ def detect_layout(image: Image.Image, report_id, page_number=1, threshold=0.4):
         x1, y1, x2, y2 = map(float, box.tolist())
         bbox_json = {"x1": x1, "y1": y1, "x2": x2, "y2": y2}
 
-        layout_elements.append({
-            # "id": str(uuid.uuid4()),                  # PK
-            "document_id": report_id,               # FK → documents.id
+        layout_elements.append({        
+            "report_id": report_id,
             "page_number": page_number,               # 페이지 번호
             "element_type": tag,                        # 요소 타입
             "element_order": idx + 1,                 # 페이지 내 순서

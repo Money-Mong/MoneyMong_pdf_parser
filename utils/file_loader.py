@@ -2,7 +2,6 @@
 import os
 import boto3
 import tempfile
-
 from config.paths import S3_BUCKET, S3_RAW_PREFIX
 
 s3 = boto3.client("s3")
