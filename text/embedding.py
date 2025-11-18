@@ -27,7 +27,7 @@ def chunk_and_embed(text, report_id, page_number=1, chunk_size=500, overlap=100)
 
     return [
         {
-            "document_id": report_id,
+            "report_id": report_id,
             "chunk_index": i + 1,
             "content": c,
             "content_type": "text",

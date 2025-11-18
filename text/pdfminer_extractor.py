@@ -13,6 +13,7 @@ def extract_text(pdf_path, layout_boxes):
         return inter / a_area
 
     text_blocks = []
+    
     # 첫번째 페이지에 대해서만 텍스트 추출
     for p, page in enumerate(extract_pages(pdf_path)):
         if p > 0:

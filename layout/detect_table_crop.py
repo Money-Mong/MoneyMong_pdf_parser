@@ -66,7 +66,7 @@ def detect_table_crop(image: Image.Image, report_id, page_number=1, threshold=0.
 
         # 저장된 테이블 box 정보 추가
         table_layout_boxes.append({
-            "document_id": report_id,
+            "report_id": report_id,
             "asset_type": "table",
             "page_number": page_number,
             "file_path": crop_path,
