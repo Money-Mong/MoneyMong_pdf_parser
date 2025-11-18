@@ -12,8 +12,14 @@ from db.insert_chunk import insert_chunks
 
 def insert_pipeline_result(result, db, Document, DocumentLayout, DocumentAsset, DocumentChunk, pdf_path=None):
 
+        
     # document 업데이트 or 생성
     document = insert_or_update_document(db, Document, result, pdf_path=pdf_path, mode="update")
+    
+    if "document_metadata" in result:
+        document.doc_metadata = result["document_metadata"]
+        db.flush()
+        
 
     # 하위 레코드들 삽입
     insert_layouts(db, DocumentLayout, document.id, result["layout_records"])
