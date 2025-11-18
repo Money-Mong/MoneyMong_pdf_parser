@@ -1,45 +1,71 @@
-# MoneMong_pdf_parser/pipeline/pipeline_db_store.py
-# run_pipeline의 반환값 → DB에 자동 삽입
-import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config.env_loader import be_context
+# pipeline_db_store.py
 from db.db_connector import SessionLocal
+from utils.file_loader import download_s3_pdf_to_temp
+from db.queries import get_pending_documents
+from pipeline.pipeline_parser import parse_single_pdf
 from db.insert_pipeline import insert_pipeline_result
-from pipeline.pipeline_parser import run_pdf_pipeline
+from config.env_loader import be_context
+from config.paths import S3_BUCKET
 
-""" PDF → 분석 → DB 저장 전체 프로세스"""
 
 def run_db_store_pipeline():
-    processed, all_results = run_pdf_pipeline()
+
     db = SessionLocal()
 
-    # BE 환경에서 모델 import
     with be_context():
         from app.models.document import Document
-        from app.models.document import DocumentLayout
-        from app.models.document import DocumentAsset
-        from app.models.document import DocumentChunk
-        from config.paths import S3_BUCKET, S3_RAW_PREFIX
+        from app.models.document import DocumentLayout, DocumentAsset, DocumentChunk
 
-        for result in all_results:
-            report_id = result["report_id"]
+        # DB pending 문서 조회
+        pending_docs = get_pending_documents(db, Document)
+        print(f"📄 Found {len(pending_docs)} pending documents in DB.")
 
-            # S3 경로
-            pdf_path = f"s3://{S3_BUCKET}/{S3_RAW_PREFIX}{report_id}.pdf"
-
-            print(f"🚀 Processing document: {report_id}")
-            
+        for doc in pending_docs:
             try:
+                print(f"\n🚀 Processing: {doc.id}")
+
+                # File_path → S3 key 변환
+                s3_path = doc.file_path
+                s3_key = s3_path.replace(f"s3://{S3_BUCKET}/", "")
+
+                print(f"📥 S3 key = {s3_key}")
+
+                # S3 → 로컬 PDF 다운로드
+                local_pdf_path = download_s3_pdf_to_temp(S3_BUCKET, s3_key)
+
+                # 파싱 수행
+                result = parse_single_pdf(
+                    report_id=doc.source_nid,     
+                    local_pdf_path=local_pdf_path
+                )
+
+                if not result:
+                    print(f"⚠️ Parsing failed for {doc.id}, marking as failed...")
+                    doc.processing_status = "failed"
+                    db.commit()
+                    continue
+
+                # DB 저장 (document.id → FK)
                 insert_pipeline_result(
                     result,
                     db,
                     Document, DocumentLayout, DocumentAsset, DocumentChunk,
-                    pdf_path=pdf_path
+                    pdf_path=s3_key
                 )
+
+                # 문서 상태 업데이트
+                doc.processing_status = "completed"
+                db.commit()
+
+                print(f"✅ Completed: {doc.id}")
+
             except Exception as e:
-                db.rollback()
-                print(f"❌ Failed to insert {report_id}: {e}")
+                print(f"❌ Error processing {doc.id}: {e}")
+                doc.processing_status = "failed"
+                db.commit()
                 continue
-    
+
     db.close()
-    print("🎉 All PDF documents processed and updated successfully.")
+    print("\nAll pending documents processed.")
+
+

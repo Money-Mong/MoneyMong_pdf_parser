@@ -27,13 +27,13 @@ def detect_layout(image: Image.Image, report_id, page_number=1, threshold=0.4):
 
         layout_elements.append({        
             "report_id": report_id,
-            "page_number": page_number,               # 페이지 번호
-            "element_type": tag,                        # 요소 타입
-            "element_order": idx + 1,                 # 페이지 내 순서
-            "bbox": bbox_json,                        # 박스 좌표
-            "content": None,                          # 텍스트 추출 시 채워짐
-            "asset_id": None,                         # table/image 등은 후처리 시 채워짐
-            "metadata": json.dumps({                  # confidence 등 부가정보
+            "page_number": page_number,               
+            "element_type": tag,                      
+            "element_order": idx + 1,                 
+            "bbox": bbox_json,                        
+            "content": None,                          
+            "asset_id": None,                         
+            "metadata": json.dumps({                  
                 "image_size": [W, H]
             }),
             "created_at": datetime.utcnow().isoformat()

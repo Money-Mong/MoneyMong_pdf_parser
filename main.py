@@ -1,9 +1,7 @@
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from fastapi import FastAPI
-from pipeline.pipeline_parser import run_pdf_pipeline
 from pipeline.pipeline_db_store import run_db_store_pipeline
-from pipeline.document_to_json import build_document_json
 from utils.file_io import save_json
 from dotenv import load_dotenv
 from config.paths import JSON_DIR

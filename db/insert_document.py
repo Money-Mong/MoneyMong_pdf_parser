@@ -14,10 +14,9 @@ def insert_or_update_document(db: Session, Document, result, pdf_path=None, mode
             # source_nid = report_id 로 기존 문서 찾기
             doc = db.query(Document).filter_by(source_nid=report_id).one()
 
-            # 기존 문서의 메타데이터 갱신 (pending->completed)
+            # 기존 문서 상태 갱신 
             doc.processing_status = "completed"
-            # doc.file_path = pdf_path
-            # doc.file_size = file_size
+
             db.flush()
 
             print(f"🟢 Updated existing document: {report_id} (uuid={doc.id})")
