@@ -3,21 +3,21 @@
 def run_ner_backfill():
     print("🔥 BE context activated. Importing models...")
     import sys
-    sys.path.insert(0, "/Users/jenzennii/Development/moneymong/MoneyMong_BE")
-    sys.path.insert(0, "/Users/jenzennii/Development/moneymong/MoneyMong_BE/app")
+    # sys.path.insert(0, "/Users/jenzennii/Development/moneymong/MoneyMong_BE")
+    # sys.path.insert(0, "/Users/jenzennii/Development/moneymong/MoneyMong_BE/app")
 
     
     from config.env_loader import be_context
 
-    with be_context():   # 🔥 여기서 MoneyMong_BE로 chdir + sys.path 추가
+    with be_context():   
 
-        # 🔥 BE 환경 기준 import
+        # BE 환경 기준 import
         from utils.sanitize import sanitize_metadata
-        from text.doc_ner import ner_in_chunks
+        from text.ner import ner_in_chunks
         from db.db_connector import SessionLocal
         from app.models.document import Document,  DocumentChunk
         from utils.ner_loader import ner_pipeline
-        from text.doc_ner import extract_main_company
+        from text.ner import extract_main_company
         from text.ner_utils import (
             map_to_company,
             aggregate_entities_extended,
@@ -54,7 +54,7 @@ def run_ner_backfill():
         def update_chunk_metadata(chunk, representative_company: str):
             ner_results = ner_pipeline(chunk.content)
 
-            # 1) 청크 내부 기업 인식 정보
+            # 청크 내부 기업 인식 정보
             chunk_orgs = []
             for e in ner_results:
                 if e["entity_group"] == "OG":

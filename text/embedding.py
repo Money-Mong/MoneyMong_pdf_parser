@@ -58,7 +58,7 @@ def chunk_and_embed(text, report_id, representative_company=None,
             "content_type": "text",
             "page_numbers": [page_number],
             "embedding": emb,
-            "keywords": chunk_keywords,  # 🔥 chunk-level keywords
+            "keywords": chunk_keywords,  
             "chunk_metadata": {
                 "chunk_orgs": chunk_orgs,
                 "chunk_entities": chunk_entities,

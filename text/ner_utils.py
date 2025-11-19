@@ -31,8 +31,8 @@ def load_company_data():
 COMPANY_DF = load_company_data()
 
 
-# 이름/alias → ticker & industry 매핑 
-COMPANY_MAP = {}  # 기업명 → {ticker, industry}
+# 이름/alias → ticker & industry 매핑  기업명 → {ticker, industry}
+COMPANY_MAP = {}  
 
 for _, row in COMPANY_DF.iterrows():
 
@@ -41,7 +41,6 @@ for _, row in COMPANY_DF.iterrows():
         "industry": row["industry"]
     }
 
-    # alias들도 추가
     for al in row["alias_list"]:
         if al:
             COMPANY_MAP[al] = {
@@ -70,6 +69,7 @@ def map_to_company(entity: str):
             return name_key, info["ticker"], info["industry"]
 
     return None, None, None
+
 
 
 def aggregate_entities(ner_results):
@@ -102,7 +102,6 @@ def aggregate_entities_extended(ner_results):
         })
 
     return ents
-
 
 
 def is_invalid_keyword(kw: str) -> bool:

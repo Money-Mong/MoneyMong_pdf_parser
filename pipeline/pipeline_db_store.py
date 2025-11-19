@@ -1,4 +1,7 @@
 # pipeline_db_store.py
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from db.db_connector import SessionLocal
 from utils.file_loader import download_s3_pdf_to_temp
 from db.queries import get_pending_documents
@@ -14,7 +17,7 @@ def run_db_store_pipeline():
 
     with be_context():
         from app.models.document import Document
-        from app.models.document import DocumentLayout, DocumentAsset, DocumentChunk
+        from app.models.document import DocumentLayout, DocumentAsset, DocumentChunk, DocumentSummary
 
         # DB pending 문서 조회
         pending_docs = get_pending_documents(db, Document)
@@ -49,7 +52,7 @@ def run_db_store_pipeline():
                 insert_pipeline_result(
                     result,
                     db,
-                    Document, DocumentLayout, DocumentAsset, DocumentChunk,
+                    Document, DocumentLayout, DocumentAsset, DocumentChunk, DocumentSummary,
                     pdf_path=s3_key
                 )
 
