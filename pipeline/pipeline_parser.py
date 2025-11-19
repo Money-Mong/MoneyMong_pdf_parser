@@ -8,13 +8,15 @@ from layout.detect_layout import detect_layout
 from text.pdfminer_extractor import extract_text
 from text.text_cleaner import clean_text
 from text.embedding import chunk_and_embed
-from text.doc_ner import extract_main_company
+from text.ner import extract_main_company
+from summary.doc_summary import doc_summary
+
 
 def parse_single_pdf(report_id, local_pdf_path):
     print(f"📄 Parsing {report_id}...")
 
     try:
-        # 첫 페이지 이미지 변환
+        # 페이지 이미지 변환
         page_img = save_first_page(local_pdf_path, report_id)
 
         # 레이아웃 분석
@@ -31,6 +33,9 @@ def parse_single_pdf(report_id, local_pdf_path):
 
         text_clean = clean_text(text)
 
+        # 문서 요약
+        summary_data = doc_summary(text_clean)
+        
         # 문서 단위 NER
         doc_metadata = extract_main_company(text_clean)
         representative_company = doc_metadata["main_company"]
@@ -44,6 +49,7 @@ def parse_single_pdf(report_id, local_pdf_path):
             "asset_records": table_layout_boxes,
             "chunk_records": chunk_records,
             "document_metadata" : doc_metadata,
+            "document_summary" : summary_data,
             "created_at": datetime.utcnow().isoformat(),
         }
 
