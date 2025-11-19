@@ -7,11 +7,10 @@ from text.ner_utils import (
 
 def extract_main_company(ner_results):
 
-    print("🔍 Extracting main company from NER results...")
+    print("...Extracting main company from NER results...")
 
     # 엔티티 집계
     stats = aggregate_entities(ner_results)
-    print('엔티티 집계 stats', stats)
 
     if not stats:
         return {

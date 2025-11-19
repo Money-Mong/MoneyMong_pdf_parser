@@ -1,3 +1,4 @@
+# embedding.py
 # from langchain_openai import OpenAIEmbeddings
 from utils.ner_loader import ner_pipeline
 from text.ner_utils import map_to_company, aggregate_entities_extended, build_keywords_from_entities
@@ -34,20 +35,20 @@ def chunk_and_embed(text, report_id, representative_company=None,
         # chunk-level NER
         ner_results = ner_pipeline(chunk)
 
-        # ORG 개체명 수집
+        # OG 개체명 수집
         chunk_orgs = []
         for e in ner_results:
-            if e["entity_group"] == "ORG":
-                mapped, ticker = map_to_company(e["word"])
-                if mapped:
-                    chunk_orgs.append({
-                        "name": mapped,
-                        "ticker": ticker,
-                        "score": e["score"]
-                    })
+            if e["entity_group"] == "OG":
+                mapped, ticker, _ = map_to_company(e["word"])
+                chunk_orgs.append({
+                    "name": mapped if mapped else e["word"],
+                    "ticker": ticker,
+                    "score": float(e["score"])
+                })
 
-        # chunk keywords 생성
         chunk_entities = aggregate_entities_extended(ner_results)
+
+        # chunk 키워드 (chunk.keywords에 저장)
         chunk_keywords = build_keywords_from_entities(chunk_entities)
 
         records.append({
@@ -58,9 +59,10 @@ def chunk_and_embed(text, report_id, representative_company=None,
             "page_numbers": [page_number],
             "embedding": emb,
             "keywords": chunk_keywords,  # 🔥 chunk-level keywords
-            "metadata": {
+            "chunk_metadata": {
                 "chunk_orgs": chunk_orgs,
-                "representative_company": representative_company
+                "chunk_entities": chunk_entities,
+                "main_company": representative_company
             },
             "token_count": len(chunk.split()),
             "created_at": now

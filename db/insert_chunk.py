@@ -11,7 +11,7 @@ def insert_chunks(db, DocumentChunk, document_id, chunk_records):
             page_numbers=rec["page_numbers"],
             embedding=rec["embedding"],
             keywords=rec["keywords"],
-            chunk_metadata=rec["metadata"],
+            chunk_metadata=rec["chunk_metadata"],
             token_count=rec["token_count"],
             created_at=rec["created_at"]
         )
