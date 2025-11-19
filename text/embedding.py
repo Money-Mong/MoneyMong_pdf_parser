@@ -1,4 +1,7 @@
+# embedding.py
 # from langchain_openai import OpenAIEmbeddings
+from utils.ner_loader import ner_pipeline
+from text.ner_utils import map_to_company, aggregate_entities_extended, build_keywords_from_entities
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
@@ -14,29 +17,55 @@ embedding_model = HuggingFaceEmbeddings(
     encode_kwargs={"normalize_embeddings": True}
     )
 
-def chunk_and_embed(text, report_id, page_number=1, chunk_size=500, overlap=100):
+def chunk_and_embed(text, report_id, representative_company=None,
+                    page_number=1, chunk_size=500, overlap=100):
+
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=overlap,
         length_function=len
     )
     chunks = splitter.split_text(text)
-
     embeddings = embedding_model.embed_documents(chunks)
     now = datetime.utcnow().isoformat()
 
-    return [
-        {
+    records = []
+
+    for i, (chunk, emb) in enumerate(zip(chunks, embeddings)):
+        # chunk-level NER
+        ner_results = ner_pipeline(chunk)
+
+        # OG 개체명 수집
+        chunk_orgs = []
+        for e in ner_results:
+            if e["entity_group"] == "OG":
+                mapped, ticker, _ = map_to_company(e["word"])
+                chunk_orgs.append({
+                    "name": mapped if mapped else e["word"],
+                    "ticker": ticker,
+                    "score": float(e["score"])
+                })
+
+        chunk_entities = aggregate_entities_extended(ner_results)
+
+        # chunk 키워드 (chunk.keywords에 저장)
+        chunk_keywords = build_keywords_from_entities(chunk_entities)
+
+        records.append({
             "report_id": report_id,
             "chunk_index": i + 1,
-            "content": c,
+            "content": chunk,
             "content_type": "text",
             "page_numbers": [page_number],
-            "embedding": e,
-            "keywords": [],
-            "metadata": {},
-            "token_count": len(c.split()),
+            "embedding": emb,
+            "keywords": chunk_keywords,  # 🔥 chunk-level keywords
+            "chunk_metadata": {
+                "chunk_orgs": chunk_orgs,
+                "chunk_entities": chunk_entities,
+                "main_company": representative_company
+            },
+            "token_count": len(chunk.split()),
             "created_at": now
-        }
-        for i, (c, e) in enumerate(zip(chunks, embeddings))
-    ]
+        })
+
+    return records

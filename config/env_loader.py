@@ -25,14 +25,19 @@ if os.path.exists(BE_ENV):
             os.environ[k] = be_env[k]
 
 # BE 루트 경로 세팅
-BE_ROOT = os.environ.get("PYTHONPATH") or EXPLICIT_PATH
-
+# BE_ROOT = os.environ.get("PYTHONPATH") or EXPLICIT_PATH
+BE_ROOT =  EXPLICIT_PATH
 @contextmanager
 def be_context():
     """ MoneyMong_BE 환경을 임시로 활성화 (모델 import용)"""
     prev = os.getcwd()
     if BE_ROOT not in sys.path:
         sys.path.append(BE_ROOT)
+
+    print("🔎 Switching to BE_ROOT:", BE_ROOT)
+    print("🔎 sys.path includes:", sys.path[-3:])
+    print("🔎 BE_ROOT contents:", os.listdir(BE_ROOT))
+
     os.chdir(BE_ROOT)
     try:
         yield

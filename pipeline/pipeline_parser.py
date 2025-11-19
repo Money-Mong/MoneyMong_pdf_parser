@@ -8,8 +8,7 @@ from layout.detect_layout import detect_layout
 from text.pdfminer_extractor import extract_text
 from text.text_cleaner import clean_text
 from text.embedding import chunk_and_embed
-
-"""단일 PDF 파일 파싱 → layout / asset / chunk 추출"""
+from text.doc_ner import extract_main_company
 
 def parse_single_pdf(report_id, local_pdf_path):
     print(f"📄 Parsing {report_id}...")
@@ -30,16 +29,21 @@ def parse_single_pdf(report_id, local_pdf_path):
             print(f"⚠️ Skipping {report_id}: text too short.")
             return None
 
-        clean = clean_text(text)
+        text_clean = clean_text(text)
 
-        # 5) 청크 & 임베딩
-        chunk_records = chunk_and_embed(clean, report_id)
+        # 문서 단위 NER
+        doc_metadata = extract_main_company(text_clean)
+        representative_company = doc_metadata["main_company"]
+
+        # 청크 & 임베딩
+        chunk_records = chunk_and_embed(text_clean, report_id, representative_company=representative_company)
 
         return {
             "report_id": report_id,
             "layout_records": layout_elements,
             "asset_records": table_layout_boxes,
             "chunk_records": chunk_records,
+            "document_metadata" : doc_metadata,
             "created_at": datetime.utcnow().isoformat(),
         }
 
