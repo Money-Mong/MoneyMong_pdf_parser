@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.env
+.env
+.git
+.gitignore
+Dockerfile
+README.md
+tests/
+notebooks/
+.ipynb_checkpoints/
+*.md
