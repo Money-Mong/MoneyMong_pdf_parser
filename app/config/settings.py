@@ -6,7 +6,11 @@ class Settings(BaseSettings):
     APP_NAME: str = "MoneyMong API"
     APP_VERSION: str = "0.1.0"
     DEBUG: bool = False
-
+    
+    # llm select
+    USE_QWEN3: bool = False
+    USE_UPSTAGE: bool = False
+    QWEN_API_BASE: str
     # aws
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
