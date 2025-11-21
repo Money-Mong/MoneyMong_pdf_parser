@@ -1,4 +1,8 @@
 FROM python:3.10
+
+# 모델 캐싱 경로
+ENV TRANSFORMERS_CACHE=/workspace/cache/model
+
 WORKDIR /app
 COPY . /app
 
