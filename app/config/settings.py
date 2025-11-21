@@ -10,10 +10,9 @@ class Settings(BaseSettings):
     # aws
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
-    AWS_REGION: str = "ap-northeast-2"
 
     # s3
-    S3_BUCKET: str = "moneymong-resources-bucket"
+    S3_BUCKET: str 
     USE_S3: bool = True
     S3_RAW_PREFIX: str
     S3_CROP_PREFIX: str
