@@ -1,9 +1,11 @@
 from app.services.pipeline.pipeline_db_store import run_db_store_pipeline
 
 def handler(event):
-    run_db_store_pipeline()
-    print('process진입')
-    return {
-        "status": "completed",
-        "message": "PDFs parsed and stored."
-    }
+    try:
+        print("==== STARTING PDF PROCESSING ====")
+        run_db_store_pipeline()
+        print("==== COMPLETED PDF PROCESSING ====")
+        return {"status": "completed", "message": "PDFs parsed and stored."}
+    except Exception as e:
+        print(f"ERROR in handler: {str(e)}")
+        return {"status": "error", "message": str(e)}
