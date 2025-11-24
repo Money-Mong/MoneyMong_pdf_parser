@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 from app.config.settings import get_settings
 
 # 환경 설정
-os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/model"
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+# os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/model"
+# os.environ["TOKENIZERS_PARALLELISM"] = "false"
 load_dotenv()
 
 # FastAPI 앱 생성
