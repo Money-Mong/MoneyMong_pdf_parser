@@ -18,4 +18,4 @@ RUN pip install --upgrade pip && \
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3000"]
 
 # 서버리스 환경에서는 엔트리포인트 함수 실행
-CMD ["python", "entrypoint.py"]
+CMD ["python3", "-u", "entrypoint.py"]
