@@ -1,7 +1,8 @@
 FROM python:3.10
 
 # 모델 캐시 경로 설정
-ENV TRANSFORMERS_CACHE=/workspace/cache/model
+ENV HF_HOME=/workspace/cache/model
+
 ENV TOKENIZERS_PARALLELISM=false
 
 WORKDIR /app

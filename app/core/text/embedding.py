@@ -2,7 +2,7 @@
 # from langchain_openai import OpenAIEmbeddings
 from app.core.text.model_loader import get_ner_pipeline
 from app.core.text.ner_utils import map_to_company, aggregate_entities_extended, build_keywords_from_entities
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
 import os
