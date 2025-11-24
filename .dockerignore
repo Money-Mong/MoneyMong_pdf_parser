@@ -4,8 +4,6 @@ __pycache__/
 .env
 .git
 .gitignore
-Dockerfile
-README.md
 tests/
 notebooks/
 .ipynb_checkpoints/
