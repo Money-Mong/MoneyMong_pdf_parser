@@ -6,6 +6,7 @@ ENV TOKENIZERS_PARALLELISM=false
 
 # 작업 디렉토리 설정
 WORKDIR /app
+ENV PYTHONPATH="/app"
 
 # 현재 디렉토리 모든 파일 복사
 COPY . /app
@@ -18,4 +19,4 @@ RUN pip install --upgrade pip && \
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3000"]
 
 # 서버리스 환경에서는 엔트리포인트 함수 실행
-CMD ["python3", "-u", "entrypoint.py"]
+CMD ["python3", "-u", "app/entrypoint.py"]

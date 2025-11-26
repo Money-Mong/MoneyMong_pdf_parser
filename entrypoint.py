@@ -1,9 +1,11 @@
 import runpod
 import os, sys
+sys.path.insert(0, "/app")
+sys.path.insert(0, "/app/app")
 
-ROOT = os.path.dirname(os.path.abspath(__file__))   # /app
-sys.path.append(ROOT)                               # /app
-sys.path.append(os.path.join(ROOT, "app"))          # /app/app
+print("WORKER START CWD:", os.getcwd())
+print("FILES HERE:", os.listdir("."))
+print("PYTHONPATH:", sys.path)
 
 def handler(event):
     print("🔥 Raw Event:", event)
