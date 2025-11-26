@@ -1,4 +1,9 @@
 import runpod
+import os, sys
+
+ROOT = os.path.dirname(os.path.abspath(__file__))   # /app
+sys.path.append(ROOT)                               # /app
+sys.path.append(os.path.join(ROOT, "app"))          # /app/app
 
 def handler(event):
     print("🔥 Raw Event:", event)
