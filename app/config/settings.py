@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     
     # llm select
     USE_QWEN3: bool = False
-    USE_UPSTAGE: bool = False
+    USE_UPSTAGE: bool = True
     QWEN_API_BASE: str
     # aws
     AWS_ACCESS_KEY_ID: str
