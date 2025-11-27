@@ -1,13 +1,15 @@
 # utils/file_loader.py
+import os
 import boto3
-import tempfile
-
 
 s3 = boto3.client("s3")
 
-def download_s3_pdf_to_temp(bucket, key):
-    """S3 PDF → 임시파일 다운로드 후 로컬 경로 반환"""
-    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-        s3.download_fileobj(bucket, key, tmp)
-        return tmp.name
+def download_s3_pdf_to_temp(bucket, key, tmp_dir='/tmp'):
+    os.makedirs(tmp_dir, exist_ok=True)
+    
+    local_path = os.path.join(tmp_dir, os.path.basename(key))
+    
+    s3.download_file(bucket, key, local_path)
+
+    return local_path
 
