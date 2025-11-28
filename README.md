@@ -26,7 +26,7 @@ MoneyMong 금융 투자 AI 튜터를 위한 RAG 데이터 구축 수행**
   * 완료 시 Lambda에서 RunPod 종료 요청
 
 ---
-## 파이프라인 구조
+## ☁️ 파이프라인 구조
 ```
                           ┌────────────────────────────────┐
                           │   Scheduler (매일 19:00)        │
@@ -125,7 +125,7 @@ RunPod API → stop Pod
 ```
 ---
 
-## 1. pdf-parse
+### 1. pdf-parse
 
 **🙂 오픈 모델 : `"cmarkea/detr-layout-detection”`**
 **DETR + PDFminer 결합** 
@@ -140,14 +140,14 @@ RunPod API → stop Pod
 
 
 
-## 2. text chunking, embedding
+### 2. text chunking, embedding
 
 **🙂 오픈 임베딩 모델 : `sangmini/msmarco-cotmae-MiniLM-L12_en-ko-ja`  ⇒ 추후 OpenAI 4omini 사용 고려**
 
 - 임베딩 벡터 차원과 DB정합성 고려
 - 영어, 한국어, 일본에 특화 임베딩 모델
 
-## 3. NER을 통해 문서 개체명 인식
+### 3. NER을 통해 문서 개체명 인식
 
 **🙂 오픈 모델 : `“soddokayo/klue-roberta-large-klue-ner”`**
 
@@ -166,7 +166,7 @@ RunPod API → stop Pod
 - LC(장소)
 ```
 
-### OG 한국상장기업명 및 ticker(종목번호) 매핑
+#### OG 한국상장기업명 및 ticker(종목번호) 매핑
 
 1. **KRX_company.csv**
     
@@ -181,7 +181,7 @@ RunPod API → stop Pod
    
     <img width="700" alt="Image" src="https://github.com/user-attachments/assets/9706eb3f-5f4b-4407-b244-e6250cf7d9a5" />
     </br>     주식 상장 기업 정보를 담은 csv 데이터로 기업 매핑 수행
-### metadata JSONB 예시
+#### metadata JSONB 예시
 
 - 문서 단위 metadata 예시 - NER
     
@@ -220,7 +220,7 @@ RunPod API → stop Pod
     ```
     
 
-## 4. 문서 요약
+### 4. 문서 요약
 
 **💠 LangChain API 모델 : `ChatUpstage` ⇒ 추후 로컬 모델 Qwen3vl  | openai-o4mini 사용**
 
@@ -280,9 +280,9 @@ Response:
 기존 문서들에 대해 NER 엔터티 메타데이터 백필
 
 ---
-## 배포 관리
+## 🚀 배포 관리
 Docker image 기반 RunPod Pods 컨테이너 구성
-### Pods 사양
+#### Pods 사양
 <img width="300" height="142" alt="Image" src="https://github.com/user-attachments/assets/c12cf323-7853-49b5-b220-288eb1bfb213" />
 </br>
 
@@ -293,7 +293,7 @@ Docker image 기반 RunPod Pods 컨테이너 구성
 
 ---
 
-## 기술 스택
+## 👾 기술 스택
 
 * Python 3.10
 * FastAPI
