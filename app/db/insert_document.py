@@ -38,7 +38,6 @@ def insert_or_update_document(db: Session, Document, result, pdf_path=None, mode
 
         if existing_doc and existing_doc.source_url:
             source_url = existing_doc.source_url
-            print(f"🔗 Found existing source_url in DB: {source_url}")
         else:
             raise ValueError(
                 f"❌ source_url not found for report_id={report_id}. "

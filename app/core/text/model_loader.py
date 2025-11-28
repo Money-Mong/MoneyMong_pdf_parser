@@ -9,7 +9,6 @@ def get_ner_pipeline():
     global _ner_pipeline
 
     if _ner_pipeline is None:
-        print("🔁 Loading NER model...")
         tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
         model = AutoModelForTokenClassification.from_pretrained(MODEL_NAME)
         _ner_pipeline = pipeline(

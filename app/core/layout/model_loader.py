@@ -14,7 +14,6 @@ def get_detr_model():
     global _model, _processor
 
     if _model is None or _processor is None:
-        print("🔁 Loading DETR model...")
         _processor = AutoImageProcessor.from_pretrained(MODEL_ID)
         _model = DetrForSegmentation.from_pretrained(MODEL_ID).to(_device)
         print("✅ DETR model loaded.")

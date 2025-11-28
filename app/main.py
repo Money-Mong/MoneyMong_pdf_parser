@@ -1,12 +1,9 @@
-import os
 
+import logging
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from app.config.settings import get_settings
 
-# 환경 설정
-# os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/model"
-# os.environ["TOKENIZERS_PARALLELISM"] = "false"
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 load_dotenv()
 
 # FastAPI 앱 생성

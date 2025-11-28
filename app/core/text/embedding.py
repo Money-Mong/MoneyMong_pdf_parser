@@ -17,6 +17,7 @@ embedding_model = HuggingFaceEmbeddings(
     encode_kwargs={"normalize_embeddings": True}
     )
 
+'''청킹, 임베딩, 청크 레벨 NER 수행'''
 def chunk_and_embed(text, report_id, representative_company=None,
                     page_number=1, chunk_size=500, overlap=100):
 

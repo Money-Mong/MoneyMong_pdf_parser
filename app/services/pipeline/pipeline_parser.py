@@ -37,7 +37,6 @@ def parse_single_pdf(report_id, local_pdf_path):
         
         # 문서 단위 metadata 구성
         doc_meta = doc_metadata(text_clean)
-        print('❤️ 주 기업: ',doc_meta['main_company'])
         # 청크 & 임베딩
         chunk_records = chunk_and_embed(text_clean, report_id, representative_company=doc_meta['main_company'])
 
