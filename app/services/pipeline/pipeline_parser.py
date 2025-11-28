@@ -8,9 +8,8 @@ from app.core.layout.detect_layout import detect_layout
 from app.core.text.pdfminer_extractor import extract_text
 from app.core.text.text_cleaner import clean_text
 from app.core.text.embedding import chunk_and_embed
-from app.core.text.ner import extract_main_company
 from app.core.llm.summary import doc_summary
-
+from app.services.metadata import doc_metadata
 
 def parse_single_pdf(report_id, local_pdf_path):
     print(f"📄 Parsing {report_id}...")
@@ -36,19 +35,18 @@ def parse_single_pdf(report_id, local_pdf_path):
         # 문서 요약
         summary_data = doc_summary(text_clean)
         
-        # 문서 단위 NER
-        doc_metadata = extract_main_company(text_clean)
-        representative_company = doc_metadata["main_company"]
-
+        # 문서 단위 metadata 구성
+        doc_meta = doc_metadata(text_clean)
+        print('❤️ 주 기업: ',doc_meta['main_company'])
         # 청크 & 임베딩
-        chunk_records = chunk_and_embed(text_clean, report_id, representative_company=representative_company)
+        chunk_records = chunk_and_embed(text_clean, report_id, representative_company=doc_meta['main_company'])
 
         return {
             "report_id": report_id,
             "layout_records": layout_elements,
             "asset_records": table_layout_boxes,
             "chunk_records": chunk_records,
-            "document_metadata" : doc_metadata,
+            "document_metadata" : doc_meta,
             "document_summary" : summary_data,
             "created_at": datetime.utcnow().isoformat(),
         }
