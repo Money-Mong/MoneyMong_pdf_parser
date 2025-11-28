@@ -24,20 +24,43 @@ MoneyMong 금융 투자 AI 튜터를 위한 RAG 데이터 구축 수행**
 
   * Task ID로 상태 추적 가능 (`processing`, `completed`, `failed`)
   * 완료 시 Lambda에서 RunPod 종료 요청
+ 
+---
+## ⚙️ 시스템 구성도
+
+```
+Lambda (crawler) 
+     ↓
+RunPod API → start A40 Spot Pod   
+     ↓ Pod Boot (20~40초)
+Lambda → FastAPI /pdf-processing 호출 (POST| https://2mdplr712ixifb-3000.proxy.runpod.net/pdf-processing)
+     ↓ 파이프라인 완료
+RunPod API → stop Pod
+```
 
 ---
-## ☁️ 파이프라인 구조
+## ☁️ 전체 파이프라인 구조
 ```
                           ┌────────────────────────────────┐
                           │   Scheduler (매일 19:00)        │
-                          │   or /pdf-parser API Trigger   │
+                          │   or /pdf-processing API Trigger │
                           └────────────────────────────────┘
                                         │
                                         ▼
-                      ┌───────────────────────────────────────┐
-                      │    run_db_store_pipeline()            │
-                      │    (MoneyMong_pdf_parser)             │
-                      └───────────────────────────────────────┘
+                        ┌───────────────────────────────────────┐
+                        │      (1) Task ID 생성 및 상태 저장        │
+                        │   save_task_status(task_id, "processing") │
+                        └───────────────────────────────────────┘
+                                        │
+                                        ▼
+                        ┌───────────────────────────────────────┐
+                        │   (2) RunPod에서 FastAPI Pod 실행 시작     │
+                        └───────────────────────────────────────┘
+                                        │
+                                        ▼
+                   ┌──────────────────────────────────────────────┐
+                   │     FastAPI 앱 내 run_db_store_pipeline() 호출   │
+                   └──────────────────────────────────────────────┘
                                         │
                          [Pending Documents from DB 조회]
                                         │
@@ -69,20 +92,20 @@ save_first_page               detect_layout                          detect_tabl
                                         │
                                         ▼
                          ┌──────────────────────────────────────┐
-                         │      (6) 문서 요약 생성 - LLM 호출        │
-                         │        summary/doc_summary.py         │
-                         │   doc_summary(full_text_clean)        │
+                         │    (6) 문서 요약 생성 - LLM 호출          │
+                         │    summary/doc_summary.py             │
+                         │    doc_summary(full_text_clean)       │
                          └──────────────────────────────────────┘
                                         │
                                         ▼
                          ┌──────────────────────────────────────┐
-                         │   (7) 문서 단위 NER & 대표기업 추출        │
-                         │      extract_main_company()          │
+                         │   (7) 문서 단위 NER & 대표기업 추출       │
+                         │   extract_main_company()             │
                          └──────────────────────────────────────┘
                                         │
                                         ▼
                          ┌──────────────────────────────────────────┐
-                         │     (8) Chunking & Embedding 생성         │
+                         │  (8) Chunking & Embedding 생성            │
                          │  chunk_and_embed(full_text_clean)        │
                          └──────────────────────────────────────────┘
                                         │
@@ -99,7 +122,7 @@ save_first_page               detect_layout                          detect_tabl
                                         │
                                         ▼
 		       ┌─────────────────────────────────────────────────────────────────────────────┐
-		       │                         insert_pipeline_result()                            │
+		       │                       insert_pipeline_result()                               │
 		       └─────────────────────────────────────────────────────────────────────────────┘
             │              │                │                 │                     │
             ▼              ▼                ▼                 ▼                     ▼
@@ -108,22 +131,29 @@ insert_or_update_document  insert_layouts  insert_assets   insert_chunks     ins
 												                      │
 												                      ▼
 												           Commit (DB 반영 → document, chunks, summary 저장)
+                                        │
+                                        ▼
+                 ┌────────────────────────────────────────────────┐
+                 │   (9) Task 완료 상태 저장: "completed"          │
+                 │   save_task_status(task_id, "completed")        │
+                 └────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+              ┌──────────────────────────────────────────────────────────────┐
+              │     (10) Lambda로 task 완료 상태 전달 (POST LAMBDA_NOTIFY_URL) │
+              └──────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+         ┌──────────────────────────────────────────────────────────────────────┐
+         │            Lambda 함수: RunPod pod 종료 요청 (podStop GraphQL)        │
+         └──────────────────────────────────────────────────────────────────────┘
+
 
 ```
 ---
 
-## ⚙️ 시스템 구성도
 
-```
-Lambda (crawler) 
-     ↓
-RunPod API → start A40 Spot Pod   
-     ↓ Pod Boot (20~40초)
-Lambda → FastAPI /pdf-processing 호출 (POST| https://2mdplr712ixifb-3000.proxy.runpod.net/pdf-processing)
-     ↓ 파이프라인 완료
-RunPod API → stop Pod
-```
----
+
 
 ### 1. pdf-parse
 
