@@ -141,10 +141,10 @@ tzdata==2025.2
 ujson==5.11.0
 upstage==0.1
 urllib3==2.5.0
-# uvicorn==0.38.0
-# uvloop==0.22.1
-# watchdog==6.0.0
-# watchfiles==1.1.1
+uvicorn==0.38.0
+uvloop==0.22.1
+watchdog==6.0.0
+watchfiles==1.1.1
 wcwidth==0.2.14
 websockets==15.0.1
 yarl==1.22.0
