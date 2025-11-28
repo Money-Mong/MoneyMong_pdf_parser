@@ -7,7 +7,7 @@ import requests
 from app.config.settings import get_settings  # 필요 시
 
 settings = get_settings()
-print("📦 LAMBDA_NOTIFY_URL from env:", os.getenv("LAMBDA_NOTIFY_URL"))
+
 def save_task_status(db, task_id, status, error_message=None):
     task = db.query(DocumentTask).filter_by(task_id=task_id).first()
     if not task:

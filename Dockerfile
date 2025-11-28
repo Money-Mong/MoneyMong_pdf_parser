@@ -3,7 +3,7 @@ FROM python:3.10
 # 모델 캐시 경로 설정
 ENV HF_HOME=/workspace/cache/model
 ENV TOKENIZERS_PARALLELISM=false
-ENV LAMBDA_NOTIFY_URL=https://7j2fu4conccb4zhzfa2o3t36sa0msvfi.lambda-url.ap-northeast-2.on.aws/
+
 
 # 작업 디렉토리 설정
 WORKDIR /app
