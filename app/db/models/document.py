@@ -3,7 +3,7 @@ Document 관련 SQLAlchemy Models
 """
 
 import uuid
-
+from datetime import datetime
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     BigInteger,
@@ -19,9 +19,17 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-
 from app.db.database import Base
 
+
+class DocumentTask(Base):
+    __tablename__ = "document_tasks"
+
+    task_id = Column(String, primary_key=True)
+    status = Column(String)
+    error_message = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 class Document(Base):
     """문서 메타데이터 (PDF, URL 등)"""

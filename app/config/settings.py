@@ -48,6 +48,9 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432  # 타입 힌트와 기본값 활용
     DATABASE_URL: str
 
+    # 람다
+    LAMBDA_NOTIFY_URL: str
+
 
     class Config:
         env_file = ".env"

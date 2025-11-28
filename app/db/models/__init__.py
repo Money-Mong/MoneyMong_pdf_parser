@@ -8,6 +8,7 @@ from app.db.models.document import (
     DocumentChunk,
     DocumentLayout,
     DocumentSummary,
+    DocumentTask,
 )
 
 
@@ -17,4 +18,5 @@ __all__ = [
     "DocumentAsset",
     "DocumentChunk",
     "DocumentSummary",
+    "DocumentTask"
 ]
